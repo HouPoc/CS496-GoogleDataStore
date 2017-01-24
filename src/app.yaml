@@ -7,5 +7,5 @@ threadsafe: yes
 handlers: 
 - url: .* 
   script: main.app 
--url: /osu/1/?.* 
+- url: /osu/1/?.* 
   script: handler.app 
