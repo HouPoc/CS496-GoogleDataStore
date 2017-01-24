@@ -1,11 +1,11 @@
-application: engineapp
+application: engineapp 
 version: 1 
-runtime: python27
-api_version: 1
-threadsafe: yes
+runtime: python27 
+api_version: 1 
+threadsafe: yes 
 
-handlers:
-- url: .*
-  script: main.app
--url: /osu/1/?.*
-  script: handler.app
+handlers: 
+- url: .* 
+  script: main.app 
+-url: /osu/1/?.* 
+  script: handler.app 
