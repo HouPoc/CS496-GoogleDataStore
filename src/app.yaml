@@ -5,9 +5,7 @@ api_version: 1
 threadsafe: yes
 
 handlers:
-
--url:.*
- script: main.app
-
- -url: /osu/1/?.*
- script: handler.app
+- url: .*
+  script: main.app
+-url: /osu/1/?.*
+  script: handler.app
