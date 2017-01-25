@@ -19,9 +19,9 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         
 
 allowed_methods = webapp2.WSGIApplication.allowed_methods
-new_allowed_methods = allowed_methods,union(('PATCH'))
-webapp2.WSGIApplication.allowed_methods = new allowed_methods
+new_allowed_methods = allowed_methods.union(('PATCH',))
+webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 app = webapp2.WSGIApplication([
-    ('/', MainPage)
+    ('/', MainPage),
     ('/book'BookHandler),
 ], debug=True)
