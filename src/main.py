@@ -12,7 +12,7 @@ class MainPage(webapp2.RequestHandler):
 class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to book
     def post(self):					#Hnadlers for post requests
         book_data = json.loads(self.request.body)	#load the data
-	self.response.write(json.dumps(book_data)
+	self.response.write(json.dumps(book_data))
 #class CustomerHandler(webapp2.RequestHandler):
 #   def post(self):
         
