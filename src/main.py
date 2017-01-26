@@ -1,6 +1,6 @@
 from google.appengine.ext import ndb
 import json
-import ndb_definition
+from ndb_definition import *
 import webapp2
 
 
