@@ -1,8 +1,7 @@
 from google.appengine.ext import ndb
-import json
 from ndb_definition import *
+import json
 import webapp2
-
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -12,8 +11,10 @@ class MainPage(webapp2.RequestHandler):
 class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to book
     def post(self):					#Hnadlers for post requests
         book_data = json.loads(self.request.body)	#load the data
+	query = Books.query()
+        count = len(query.fetch())
         new_book = Books(
-            book_id = Books.all(keys_only=True).count() + 1,
+            book_id = count + 1,
             title = book_data['title'],
             isbn = book_data['isbn'],
             genre = book_data['genre'],
@@ -23,7 +24,6 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         new_book.put()
         book_dict = new_book.to_dict()
 	self.response.write(json.dumps(book_dict))
-
 
 #class CustomerHandler(webapp2.RequestHandler):
 #   def post(self):
