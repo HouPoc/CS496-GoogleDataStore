@@ -8,7 +8,12 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
         self.response.write('Hello, World!')
+    
+    def delete(self):
+        ndb.delete_multi(Books.query().fetch(keys_only=True))    
+#        ndb.delete_multi(Customers.query().fetch(keys_only=True))
 
+    
 class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to book
     def post(self):					#Hnadlers for post requests
         book_data = json.loads(self.request.body)	#load the data
@@ -31,6 +36,12 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         back_data = query_book.fetch()
         self.response.write(json.dumps(back_data[0].to_dict()))
 
+    def delete(self, book_id):
+        query_book = Books.query(Books.book_id == int(book_id))
+        target_book = query.get()
+        target_book_id = target_book.key.book_id()
+        target_book.key.delete()
+        self.resonse.write("book %s has been deleted", % target_book_id)
 #class CustomerHandler(webapp2.RequestHandler):
 #    def post(self):
 #        self.response.write("Customer Handler")
