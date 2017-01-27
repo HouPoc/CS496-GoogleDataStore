@@ -3,6 +3,7 @@ from ndb_definition import *
 import json
 import webapp2
 
+
 class MainPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
@@ -24,13 +25,23 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         new_book.put()
         book_dict = new_book.to_dict()
 	self.response.write(json.dumps(book_dict))
+ 
+    def get(self, book_id)   			        #Get Request Handler
+        query = Books.all()
+        query.filter("book_id =", book_id)
+        back_data = query.to_dict()
+        self.response.write(json.dumps(back_data))
 
-#class CustomerHandler(webapp2.RequestHandler):
-#   def post(self):
+
+class CustomerHandler(webapp2.RequestHandler):
+    def post(self):
+        self.response.write("Customer Handler")
+
 allowed_methods = webapp2.WSGIApplication.allowed_methods
 new_allowed_methods = allowed_methods.union(('PATCH',))
 webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/book',BookHandler),
+    ('/book/[0-9]+', BookHanlder),
 ], debug=True)
