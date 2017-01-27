@@ -39,7 +39,7 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
     def delete(self, book_id):
         query_book = Books.query(Books.id == int(book_id))
         target_book = query_book.get()
-        target_book_id = target_book['id']
+        target_book_id = target_book.id
         target_book.key.delete()
         self.response.write("book %d has been deleted" % target_book_id)
 
