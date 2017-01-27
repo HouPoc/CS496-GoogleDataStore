@@ -3,7 +3,7 @@ from google.appengine.ext import ndb
 
 
 class Books(ndb.Model):
-    book_id = ndb.IntegerProperty(required=True)
+    id = ndb.IntegerProperty(required=True)
     title = ndb.StringProperty(required=True)
     isbn = ndb.StringProperty(required=True)
     genre = ndb.StringProperty(repeated=True)
