@@ -31,13 +31,12 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         book_dict = new_book.to_dict()
 	self.response.write(json.dumps(book_dict))
  
-    def get(self, book_id):   			        #Get Request Handler
-        query_book = Books.query(Books.id == int(book_id))
+    def get(self, **args):   			        #Get Request Handler
+        query_book = Books.query(Books.id == int(args['book_id']))
         back_data = query_book.fetch()
         self.response.write(json.dumps(back_data[0].to_dict()))
-
-    def delete(self, book_id):
-        query_book = Books.query(Books.id == int(book_id))
+    def delete(self, **args):
+        query_book = Books.query(Books.id == int(args['book_id']))
         target_book = query_book.get()
         target_book_id = target_book.id
         target_book.key.delete()
@@ -53,6 +52,5 @@ webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/book',BookHandler),
-    ('/book/(\d+)', BookHandler),
 ], debug=True)
-
+app.router.add(webapp2.Route('/book/<book_id:\d+>', handler=BookHandler))
