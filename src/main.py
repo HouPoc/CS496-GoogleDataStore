@@ -36,12 +36,13 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         back_data = query_book.fetch()
         self.response.write(json.dumps(back_data[0].to_dict()))
 
-    def delete(self, book_id):
-        query_book = Books.query(Books.book_id == int(book_id))
-        target_book = query.get()
-        target_book_id = target_book.key.book_id()
-        target_book.key.delete()
-        self.resonse.write("book %s has been deleted", % target_book_id)
+#    def delete(self, book_id):
+#        query_book = Books.query(Books.book_id == int(book_id))
+#        target_book = query.get()
+#        target_book_id = target_book.key.book_id()
+#        target_book.key.delete()
+#        self.resonse.write("book %r has been deleted", % target_book_id)
+
 #class CustomerHandler(webapp2.RequestHandler):
 #    def post(self):
 #        self.response.write("Customer Handler")
