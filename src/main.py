@@ -62,7 +62,7 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         self.response.write("book %d has been deleted" % target_book_id)
 # Customer handler no error
 class CustomerHandler(webapp2.RequestHandler):
-     def post(self):
+    def post(self):
         customer_data = json.loads(self.request.body)
         query = Customers.query()
         count = len(query.fetch())
@@ -82,13 +82,13 @@ class CustomerHandler(webapp2.RequestHandler):
             back_data = query_customer.fetch()
             self.response.write(json.dumps(back_data[0].to_dict()))   
         else:
-           query_customer = Customers.query()
+            query_customer = Customers.query()
             customer_list = query_customer.fetch()
             back_data = []
-                for item in customer_list:
-                    back_data.append(item.to_dict())
-                self.response.write(json.dumps(back_data))  
- 
+            for item in customer_list:
+                back_data.append(item.to_dict())
+            self.response.write(json.dumps(back_data))
+
     def delete(self, **args):
         query_customer = Customers.query(Customers.id == int(args['customer_id']))
         target_customer = query_customer.get()
