@@ -11,7 +11,7 @@ class Books(ndb.Model):
     check_in = ndb.BooleanProperty()
     
 class Customers(ndb.Model):
-    customer_id = ndb.IntegerProperty(required=True)
+    id = ndb.IntegerProperty(required=True)
     name = ndb.StringProperty(required=True)
-    balance = ndb.IntegerProperty(required=True)
+    balance = ndb.FloatProperty(required=True)
     check_out = ndb.StringProperty(repeated=True)
