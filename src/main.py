@@ -46,7 +46,7 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
                 for item in book_list:
                     back_data.append(item.to_dict())
                 self.response.write(json.dumps(back_data))
-            else:				//else no error
+            else:				
                 query_book = Books.query()
                 book_list = query_book.fetch()
                 back_data = []
