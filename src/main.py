@@ -30,16 +30,14 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         new_book.put()
         book_dict = new_book.to_dict()
 	self.response.write(json.dumps(book_dict))
- 
+ # no error
     def get(self, **args):   			        #Get Request Handler
         if 'book_id' in args:
        	    query_book = Books.query(Books.id == int(args['book_id']))
        	    back_data = query_book.fetch()
             self.response.write(json.dumps(back_data[0].to_dict()))
-       
         else:
             query_key = self.request.get('check_in')
-
             if query_key:
                 checkedIn = (query_key == "true")
                 query_book = Books.query(Books.check_in == checkedIn)
@@ -48,50 +46,48 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
                 for item in book_list:
                     back_data.append(item.to_dict())
                 self.response.write(json.dumps(back_data))
-
-             else:
+            else:				//else no error
                 query_book = Books.query()
                 book_list = query_book.fetch()
                 back_data = []
                 for item in book_list:
-                    back_data.append(item.to_dict)
+                    back_data.append(item.to_dict())
                 self.response.write(json.dumps(back_data))  
- 
+#delete no error 
     def delete(self, **args):
         query_book = Books.query(Books.id == int(args['book_id']))
         target_book = query_book.get()
         target_book_id = target_book.id
         target_book.key.delete()
         self.response.write("book %d has been deleted" % target_book_id)
-
+# Customer handler no error
 class CustomerHandler(webapp2.RequestHandler):
  
     def post(self):
         customer_data = json.loads(self.request.body)
         query = Customers.query()
         count = len(query.fetch())
-        new_customer = Customer(
+        new_customer = Customers(
             id = count + 1,
-            name = customer['name'],
-            balance = float(customer['balance']),
-            check_out = customer['check_out']
+            name = customer_data['name'],
+            balance = float(customer_data['balance']),
+            check_out = customer_data['check_out']
         )
         new_customer.put()
         customer_dict = new_customer.to_dict()
-        self.write(json.dumps(customer_dict))
+        self.response.write(json.dumps(customer_dict))
 
     def get(self, **args):
         if 'customer_id' in args:
-            query_customer = Customers.query(Customers.id == int(args['customer_id'])
+            query_customer = Customers.query(Customers.id == int(args['customer_id']))
             back_data = query_customer.fetch()
-            self.response.write(json.dumps(back_data[0].to_dict()))
-        
+            self.response.write(json.dumps(back_data[0].to_dict()))   
         else:
-            query_customer = Customers.query()
+           query_customer = Customers.query()
             customer_list = query_customer.fetch()
             back_data = []
                 for item in customer_list:
-                    back_data.append(item.to_dict)
+                    back_data.append(item.to_dict())
                 self.response.write(json.dumps(back_data))  
  
     def delete(self, **args):
@@ -108,49 +104,7 @@ webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/books', BookHandler),
-    ('/customers', CustomerHandler)
+#    ('/customers', CustomerHandler),
 ], debug=True)
 app.router.add(webapp2.Route('/books/<book_id:\d+>', handler=BookHandler))
-app.router.add(webapp2.Route('/customers/<customer_id:\d+>', handler=CustomerHandler))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#app.router.add(webapp2.Route('/customers/<customer_id:\d+>', handler=CustomerHandler))
