@@ -62,8 +62,7 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         self.response.write("book %d has been deleted" % target_book_id)
 # Customer handler no error
 class CustomerHandler(webapp2.RequestHandler):
- 
-    def post(self):
+     def post(self):
         customer_data = json.loads(self.request.body)
         query = Customers.query()
         count = len(query.fetch())
