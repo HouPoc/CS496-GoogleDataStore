@@ -98,11 +98,11 @@ class CustomerHandler(webapp2.RequestHandler):
 
 class EventHandler(webapp2.RequestHandler):
 	def put(self, **args):
-		if 'customer_id' in args && 'book_id' in args:
+		if ('customer_id' in args and 'book_id' in args):
 			query_customer = Customers.query(Customers.id == int(args['customer_id']))
 			query_book = Books.query(Books.id == int(args['book_id']))
 			book = query_customer.get()
-			book['check_in'] = false
+			book['check_in'] = False
 			book.put()
 			customer = query_book.get()
 			book_link = "/books/" + str(book_id)
@@ -110,7 +110,7 @@ class EventHandler(webapp2.RequestHandler):
 			customer.put()
 			self.response.write(json.dumps(customer.to_dict()))
 	def delete(self, **args):
-		if 'customer_id' in args && 'book_id' in args:
+		if ('customer_id' in args and 'book_id' in args):
 			self.response.write(json.dumps(customer.to_dict()))
 		
 allowed_methods = webapp2.WSGIApplication.allowed_methods
