@@ -15,7 +15,7 @@ class MainPage(webapp2.RequestHandler):
 
     
 class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to book
-    def post(self):					#Hnadlers for post requests
+    def p(self):					#Hnadlers for post requests
         book_data = json.loads(self.request.body)	#load the data
 	query = Books.query()
         count = len(query.fetch())
@@ -62,7 +62,7 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         self.response.write("book %d has been deleted" % target_book_id)
 # Customer handler no error
 class CustomerHandler(webapp2.RequestHandler):
-    def post(self):
+    def put(self):
         customer_data = json.loads(self.request.body)
         query = Customers.query()
         count = len(query.fetch())
@@ -96,14 +96,31 @@ class CustomerHandler(webapp2.RequestHandler):
         target_customer.key.delete()
         self.response.write("customer %d has been deleted" % target_customer_id)
 
-
+class EventHandler(webapp2.RequestHandler):
+	def put(self, **args):
+		if 'customer_id' in args && 'book_id' in args:
+			query_customer = Customers.query(Customers.id == int(args['customer_id']))
+			query_book = Books.query(Books.id == int(args['book_id']))
+			book = query_customer.get()
+			book['check_in'] = false
+			book.put()
+			customer = query_book.get()
+			book_link = "/books/" + str(book_id)
+			customer['check_out'] = customer['check_out'].append(book_link)
+			customer.put()
+			self.response.write(json.dumps(customer.to_dict()))
+	def delete(self, **args):
+		if 'customer_id' in args && 'book_id' in args:
+			self.response.write(json.dumps(customer.to_dict()))
+		
 allowed_methods = webapp2.WSGIApplication.allowed_methods
 new_allowed_methods = allowed_methods.union(('PATCH',))
 webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/books', BookHandler),
-#    ('/customers', CustomerHandler),
+    ('/customers', CustomerHandler),
 ], debug=True)
 app.router.add(webapp2.Route('/books/<book_id:\d+>', handler=BookHandler))
-#app.router.add(webapp2.Route('/customers/<customer_id:\d+>', handler=CustomerHandler))
+app.router.add(webapp2.Route('/customers/<customer_id:\d+>', handler=CustomerHandler))
+app.router.add(webapp2.Route('/customers/<customer_id:\d+>/books/<book_id:\d+>', handler=EventHandler))
