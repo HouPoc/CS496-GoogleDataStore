@@ -66,12 +66,20 @@ class CustomerHandler(webapp2.RequestHandler):
         customer_data = json.loads(self.request.body)
         query = Customers.query()
         count = len(query.fetch())
-        new_customer = Customers(
-            id = count + 1,
-            name = customer_data['name'],
-            balance = float(customer_data['balance']),
-            check_out = customer_data['check_out']
-        )
+        if (len(customer_data['checked_out']) != 0):
+            new_customer = Customers(
+                id = count + 1,
+                name = customer_data['name'],
+                balance = float(customer_data['balance']),
+                check_out = customer_data['checked_out']
+           )
+        else:
+            new_customer = Customers(
+                id = count + 1,
+                name = customer_data['name'],
+                balance = float(customer_data['balance']),
+                check_out = []
+           ) 
         new_customer.put()
         customer_dict = new_customer.to_dict()
         self.response.write(json.dumps(customer_dict))
@@ -101,12 +109,12 @@ class EventHandler(webapp2.RequestHandler):
 		if ('customer_id' in args and 'book_id' in args):
 			query_customer = Customers.query(Customers.id == int(args['customer_id']))
 			query_book = Books.query(Books.id == int(args['book_id']))
-			book = query_customer.get()
-			book['check_in'] = False
+			book = query_book.get()
+			book.check_in = False
 			book.put()
-			customer = query_book.get()
-			book_link = "/books/" + str(book_id)
-			customer['check_out'] = customer['check_out'].append(book_link)
+			customer = query_customer.get()
+			book_link = ("/books/%d" % book.id)
+			customer.check_out.append(book_link)
 			customer.put()
 			self.response.write(json.dumps(customer.to_dict()))
 	def delete(self, **args):
