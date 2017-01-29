@@ -3,7 +3,6 @@ from google.appengine.ext import ndb
 
 
 class Books(ndb.Model):
-    id = ndb.IntegerProperty(required=True)
     title = ndb.StringProperty(required=True)
     isbn = ndb.StringProperty(required=True)
     genre = ndb.StringProperty(repeated=True)
@@ -11,7 +10,6 @@ class Books(ndb.Model):
     check_in = ndb.BooleanProperty()
     
 class Customers(ndb.Model):
-    id = ndb.IntegerProperty(required=True)
     name = ndb.StringProperty(required=True)
     balance = ndb.FloatProperty(required=True)
     check_out = ndb.StringProperty(repeated=True)
