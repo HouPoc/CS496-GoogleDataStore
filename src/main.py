@@ -125,11 +125,11 @@ class CustomerHandler(webapp2.RequestHandler):
         target_customer = query_customer.get()
         update_data = json.loads(self.request.body)
         if 'name'in update_data:
-           target_customer.name = update['name']
+           target_customer.name = update_data['name']
         if 'balance' in update_data:
-           target_customer.balance = update['balance']
+           target_customer.balance = update_data['balance']
         if 'check_out' in update_data:
-           target_customer.check_out = update['check_out']
+           target_customer.check_out = update_data['check_out']
         target_customer.put()
         back_data = target_customer.to_dict()
         back_data['id'] = target_customer.key.id() 
