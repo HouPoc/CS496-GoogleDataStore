@@ -168,7 +168,7 @@ class EventHandler(webapp2.RequestHandler):
             self.response.write(json.dumps(return_data))
 
 
-allowed_methods =  webapp2.WSGIApplication.allowed_methods
+allowed_methods = webapp2.WSGIApplication.allowed_methods
 new_allowed_methods = allowed_methods.union(('PATCH',))
 webapp2.WSGIApplication.allowed_methods = new_allowed_methods
 app = webapp2.WSGIApplication([
