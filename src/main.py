@@ -119,7 +119,21 @@ class CustomerHandler(webapp2.RequestHandler):
         target_customer_id = target_customer.key.id()
         target_customer.key.delete()
         self.response.write("customer %d has been deleted" % target_customer_id)
-
+ 
+    def patch(self, **args): 
+        query_customer = ndb.Key(Customers, int(args['customer_id']))
+        target_customer = query_customer.get()
+        update_data = json.loads(self.request.body)
+        if 'name'in update_data:
+           target_customer.name = update['name']
+        if 'balance' in update_data:
+           target_customer.balance = update['balance']
+        if 'check_out' in update_data:
+           target_customer.check_out = update['check_out']
+        target_customer.put()
+        back_data = target_customer.to_dict()
+        back_data['id'] = target_customer.key.id() 
+        self.response.write(json.dumps(back_data))
 
 class EventHandler(webapp2.RequestHandler):
     def put(self, **args):
