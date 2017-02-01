@@ -65,18 +65,18 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         self.response.write("book %d has been deleted" % target_book_id)
         
     def patch(self, **args):
-        query_book = ndb.Key(books, int(args['book_id']))
+        query_book = ndb.Key(Books, int(args['book_id']))
         target_book = query_book.get()
         update_data = json.loads(self.request.body)
-        if update_data['title']:
+        if 'title'in update_data:
             target_book.title = update_data['title']
-        if update_data['isbn']:
+        if 'isbn' in update_data:
             target_book.isbn = update_data['isbn']
-        if update_data['author']:
+        if 'author' in update_data:
             target_book.author = update_data['author']
-        if update_data['genre']:
+        if 'genre' in update_data:
             target_book.genre = update_data['genre']
-        if update_data['check_in']:
+        if 'check_in' in update_data:
             target_book.check_in = update_data['check_in']
         target_book.put()
         back_data = target_book.to_dict()
