@@ -63,7 +63,7 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         target_book_id = target_book.key.id()
         target_book.key.delete()
         self.response.write("book %d has been deleted" % target_book_id)
- 
+        
     def patch(self, **args):
         query_book = ndb.Key(books, int(args['book_id']))
         target_book = query_book.get()
