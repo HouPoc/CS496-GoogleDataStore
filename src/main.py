@@ -167,11 +167,12 @@ class EventHandler(webapp2.RequestHandler):
                 self.response.write("this book is not checked out")
         elif 'customer_id' in args:
             query_customer = ndb.Key(Customers, int(args['customer_id']))
-            customer = query_customer.get()
-            book_id = []
+            customer = query_customer.get() 
             for item in customer.check_out:
-                book_id.append(int(item[7:]))
-            self.response.write(json.dumps(book_id))
+                book_id = int(item[7:])
+                query_book = ndb.Key(Books, book_id)
+                book = query_book.get()
+                self.response.write(book.to_dict())
         else:
             self.response.write("Unknown Request")
 
