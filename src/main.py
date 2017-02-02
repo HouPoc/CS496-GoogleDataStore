@@ -165,6 +165,15 @@ class EventHandler(webapp2.RequestHandler):
                 self.response.write(json.dumps(return_data))
             else:
                 self.response.write("this book is not checked out")
+         else if 'customer_id' in args:
+            query_customer = ndb.Key(Customers, int(args['customer_id']))
+            customer = query_customer.get()
+            book_id = []
+            from item in query_customer.check_out:
+                book_id.append(int(item[7:]))
+            self.response.write(json.dumps(book_id))
+
+
     def delete(self, **args):
         if ('customer_id' in args and 'book_id' in args):
             query_customer = ndb.Key(Customers, int(args['customer_id']))
