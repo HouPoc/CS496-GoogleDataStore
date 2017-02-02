@@ -165,14 +165,15 @@ class EventHandler(webapp2.RequestHandler):
                 self.response.write(json.dumps(return_data))
             else:
                 self.response.write("this book is not checked out")
-         else if 'customer_id' in args:
+        elif 'customer_id' in args:
             query_customer = ndb.Key(Customers, int(args['customer_id']))
             customer = query_customer.get()
             book_id = []
-            from item in query_customer.check_out:
+            for item in customer.check_out:
                 book_id.append(int(item[7:]))
             self.response.write(json.dumps(book_id))
-
+        else:
+            self.response.write("Unknown Request")
 
     def delete(self, **args):
         if ('customer_id' in args and 'book_id' in args):
@@ -201,4 +202,5 @@ app = webapp2.WSGIApplication([
 ], debug=True)
 app.router.add(webapp2.Route('/books/<book_id:\d+>', handler=BookHandler))
 app.router.add(webapp2.Route('/customers/<customer_id:\d+>', handler=CustomerHandler))
+app.router.add(webapp2.Route('/customers/<customer_id:\d+>/books', handler=EventHandler))
 app.router.add(webapp2.Route('/customers/<customer_id:\d+>/books/<book_id:\d+>', handler=EventHandler))
