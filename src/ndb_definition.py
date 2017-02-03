@@ -7,7 +7,7 @@ class Books(ndb.Model):
     isbn = ndb.StringProperty(required=True)
     genre = ndb.StringProperty(repeated=True)
     author = ndb.StringProperty(required=True)
-    check_in = ndb.BooleanProperty()
+    checkedIn = ndb.BooleanProperty()
     
 class Customers(ndb.Model):
     name = ndb.StringProperty(required=True)

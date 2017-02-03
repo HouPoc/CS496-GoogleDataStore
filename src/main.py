@@ -21,7 +21,7 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
             isbn = book_data['isbn'],
             genre = book_data['genre'],
             author = book_data['author'],
-            check_in = book_data['checkedIn']
+            checkedIn = book_data['checkedIn']
         )
         new_book.put()
         book_dict = new_book.to_dict()
@@ -36,10 +36,10 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
             return_data['id'] = back_data.key.id()
             self.response.write(json.dumps(return_data)) 
         else:
-            query_key = self.request.get('check_in')
+            query_key = self.request.get('checkedIn')
             if query_key:
-                checkedIn = (query_key == "true")
-                query_book = Books.query(Books.check_in == checkedIn)
+                check_in = (query_key == "true")
+                query_book = Books.query(Books.checkedIn == check_in)
                 book_list = query_book.fetch()
                 back_data = []
                 for item in book_list:
@@ -141,7 +141,7 @@ class EventHandler(webapp2.RequestHandler):
             query_customer = ndb.Key(Customers, int(args['customer_id']))
             query_book = ndb.Key(Books, int(args['book_id']))
             book = query_book.get()
-            book.check_in = False
+            book.checkedIn = False
             book.put()
             customer = query_customer.get()
             book_link = ("/books/%d" % book.key.id())
@@ -181,7 +181,7 @@ class EventHandler(webapp2.RequestHandler):
             query_customer = ndb.Key(Customers, int(args['customer_id']))
             query_book = ndb.Key(Books, int(args['book_id']))
             book = query_book.get()
-            book.check_in = True
+            book.checkedIn = True
             book.put()
             customer = query_customer.get()
             book_link = ("/books/%d" % book.key.id())
