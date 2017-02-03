@@ -103,7 +103,7 @@ class CustomerHandler(webapp2.RequestHandler):
         new_customer = Customers(
             name = customer_data['name'],
             balance = float(customer_data['balance']),
-            check_out = customer_data['checked_out']
+            checked_out = customer_data['checked_out']
         )
         new_customer.put()
         customer_dict = new_customer.to_dict()
@@ -142,8 +142,8 @@ class CustomerHandler(webapp2.RequestHandler):
            target_customer.name = update_data['name']
         if 'balance' in update_data:
            target_customer.balance = update_data['balance']
-        if 'check_out' in update_data:
-           target_customer.check_out = update_data['checked_out']
+        if 'checked_out' in update_data:
+           target_customer.checked_out = update_data['checked_out']
         target_customer.put()
         back_data = target_customer.to_dict()
         back_data['id'] = target_customer.key.id() 
@@ -155,7 +155,7 @@ class CustomerHandler(webapp2.RequestHandler):
         update_data = json.loads(self.request.body)
         target_customer.name = update_data['name']
         target_customer.balance = update_data['balance']
-        target_customer.check_out = update_data['checked_out']
+        target_customer.checked_out = update_data['checked_out']
         target_customer.put()
         back_data = target_customer.to_dict()
         back_data['id'] = target_customer.key.id() 
@@ -171,7 +171,7 @@ class EventHandler(webapp2.RequestHandler):
             book.put()
             customer = query_customer.get()
             book_link = ("/books/%d" % book.key.id())
-            customer.check_out.append(book_link)
+            customer.checked_out.append(book_link)
             customer.put()
             return_book = ndb.Key(Customers, int(args['customer_id'])).get()
             return_data = return_book.to_dict()
@@ -185,7 +185,7 @@ class EventHandler(webapp2.RequestHandler):
             customer = query_customer.get()
             book = query_book.get()
             book_link = ("/books/%d" % book.key.id())
-            if book_link in customer.check_out:
+            if book_link in customer.checked_out:
                 return_data = book.to_dict()
                 return_data['id'] = book.key.id()
                 self.response.write(json.dumps(return_data))
@@ -194,7 +194,7 @@ class EventHandler(webapp2.RequestHandler):
         elif 'customer_id' in args:
             query_customer = ndb.Key(Customers, int(args['customer_id']))
             customer = query_customer.get() 
-            for item in customer.check_out:
+            for item in customer.checked_out:
                 book_id = int(item[7:])
                 query_book = ndb.Key(Books, book_id)
                 book = query_book.get()
@@ -211,7 +211,7 @@ class EventHandler(webapp2.RequestHandler):
             book.put()
             customer = query_customer.get()
             book_link = ("/books/%d" % book.key.id())
-            customer.check_out.remove(book_link)
+            customer.checked_out.remove(book_link)
             customer.put()
             return_book = ndb.Key(Customers, int(args['customer_id'])).get()
             return_data = return_book.to_dict()
