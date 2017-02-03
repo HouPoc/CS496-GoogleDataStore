@@ -143,7 +143,7 @@ class CustomerHandler(webapp2.RequestHandler):
         if 'balance' in update_data:
            target_customer.balance = update_data['balance']
         if 'check_out' in update_data:
-           target_customer.check_out = update_data['check_out']
+           target_customer.check_out = update_data['checked_out']
         target_customer.put()
         back_data = target_customer.to_dict()
         back_data['id'] = target_customer.key.id() 
@@ -155,7 +155,7 @@ class CustomerHandler(webapp2.RequestHandler):
         update_data = json.loads(self.request.body)
         target_customer.name = update_data['name']
         target_customer.balance = update_data['balance']
-        target_customer.check_out = update_data['check_out']
+        target_customer.check_out = update_data['checked_out']
         target_customer.put()
         back_data = target_customer.to_dict()
         back_data['id'] = target_customer.key.id() 
