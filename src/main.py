@@ -149,7 +149,7 @@ class CustomerHandler(webapp2.RequestHandler):
         back_data['id'] = target_customer.key.id() 
         self.response.write(json.dumps(back_data))
 
-    def patch(self, **args): 
+    def put(self, **args): 
         query_customer = ndb.Key(Customers, int(args['customer_id']))
         target_customer = query_customer.get()
         update_data = json.loads(self.request.body)
