@@ -77,7 +77,21 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         if 'genre' in update_data:
             target_book.genre = update_data['genre']
         if 'check_in' in update_data:
-            target_book.check_in = update_data['check_in']
+            target_book.checkedIn = update_data['checkedIn']
+        target_book.put()
+        back_data = target_book.to_dict()
+        back_data['id'] = target_book.key.id() 
+        self.response.write(json.dumps(back_data))
+
+    def put(self, **args):
+        query_book = ndb.Key(Books, int(args['book_id']))
+        target_book = query_book.get()
+        update_data = json.loads(self.request.body)
+        target_book.title = update_data['title']
+        target_book.isbn = update_data['isbn']
+        target_book.author = update_data['author']
+        target_book.genre = update_data['genre']
+        target_book.checkedIn = update_data['checkedIn']
         target_book.put()
         back_data = target_book.to_dict()
         back_data['id'] = target_book.key.id() 
@@ -130,6 +144,18 @@ class CustomerHandler(webapp2.RequestHandler):
            target_customer.balance = update_data['balance']
         if 'check_out' in update_data:
            target_customer.check_out = update_data['check_out']
+        target_customer.put()
+        back_data = target_customer.to_dict()
+        back_data['id'] = target_customer.key.id() 
+        self.response.write(json.dumps(back_data))
+
+    def patch(self, **args): 
+        query_customer = ndb.Key(Customers, int(args['customer_id']))
+        target_customer = query_customer.get()
+        update_data = json.loads(self.request.body)
+        target_customer.name = update_data['name']
+        target_customer.balance = update_data['balance']
+        target_customer.check_out = update_data['check_out']
         target_customer.put()
         back_data = target_customer.to_dict()
         back_data['id'] = target_customer.key.id() 
