@@ -12,4 +12,4 @@ class Books(ndb.Model):
 class Customers(ndb.Model):
     name = ndb.StringProperty(required=True)
     balance = ndb.FloatProperty(required=True)
-    check_out = ndb.StringProperty(repeated=True)
+    checked_out = ndb.StringProperty(repeated=True)
