@@ -14,7 +14,7 @@ class MainPage(webapp2.RequestHandler):
         ndb.delete_multi(Customers.query().fetch(keys_only=True))
 
 class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to book
-    def put(self):					#Hnadlers for post requests
+    def post(self):					#Hnadlers for post requests
         book_data = json.loads(self.request.body)	#load the data
         new_book = Books(
             title = book_data['title'],
@@ -84,7 +84,7 @@ class BookHandler(webapp2.RequestHandler):		#Handlers for actions related to boo
         self.response.write(json.dumps(back_data))
  
 class CustomerHandler(webapp2.RequestHandler):
-    def put(self):
+    def post(self):
         customer_data = json.loads(self.request.body)
         new_customer = Customers(
             name = customer_data['name'],
